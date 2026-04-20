@@ -26,7 +26,7 @@ export async function fetchSheetData(): Promise<SheetData> {
     throw new Error('GOOGLE_SHEET_ID and GOOGLE_SHEETS_API_KEY must be set')
   }
 
-  const sheetName = encodeURIComponent(process.env.GOOGLE_SHEET_NAME || 'Sheet1')
+  const sheetName = encodeURIComponent(process.env.GOOGLE_SHEET_NAME || 'Shipping Orders')
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`
   const res = await axios.get<SheetsResponse>(url, { timeout: 10000 })
   const values = res.data.values || []
