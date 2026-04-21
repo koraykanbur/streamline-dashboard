@@ -25,11 +25,14 @@ export default function KpiCard({ label, value, delta, prefix = '', suffix = '',
     : value
 
   return (
-    <div style={{
-      background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10,
-      padding: '20px 22px', flex: 1, minWidth: 0,
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}>
+    <div
+      className="p-4 md:p-[20px_22px]"
+      style={{
+        background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10,
+        flex: 1, minWidth: 0,
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+      }}
+    >
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
         {icon && (
           <div style={{
@@ -52,7 +55,7 @@ export default function KpiCard({ label, value, delta, prefix = '', suffix = '',
         )}
       </div>
       <div style={{ fontSize: 13, color: '#94A3B8', fontWeight: 500, marginBottom: 6 }}>{label}</div>
-      <div style={{ fontSize: 28, fontWeight: 700, color: '#0F172A', lineHeight: 1, letterSpacing: '-0.5px' }}>
+      <div className="text-lg md:text-[28px]" style={{ fontWeight: 700, color: '#0F172A', lineHeight: 1, letterSpacing: '-0.5px' }}>
         {prefix}{formatted}{suffix}
       </div>
     </div>
