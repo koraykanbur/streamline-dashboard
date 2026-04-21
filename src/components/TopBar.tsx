@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Screen, DateRange } from '../types'
+import { Screen } from '../types'
 import { api } from '../lib/api'
 
 const SCREEN_LABELS: Record<Screen, string> = {
@@ -10,19 +10,14 @@ const SCREEN_LABELS: Record<Screen, string> = {
   trends:    'Trends',
 }
 
-const RANGES: DateRange[] = ['7d', '30d', '90d', 'all']
-const RANGE_LABELS: Record<DateRange, string> = { '7d': '7d', '30d': '30d', '90d': '90d', 'all': 'All' }
-
 interface Props {
   screen: Screen
-  dateRange: DateRange
-  onDateRange: (r: DateRange) => void
   onAskAI: () => void
   onRefreshed: () => void
   onMenuToggle: () => void
 }
 
-export default function TopBar({ screen, dateRange, onDateRange, onAskAI, onRefreshed, onMenuToggle }: Props) {
+export default function TopBar({ screen, onAskAI, onRefreshed, onMenuToggle }: Props) {
   const [refreshing, setRefreshing] = useState(false)
 
   const handleRefresh = async () => {
@@ -104,20 +99,9 @@ export default function TopBar({ screen, dateRange, onDateRange, onAskAI, onRefr
 
       <div style={{ flex: 1 }} />
 
-      {/* Date range pills */}
-      <div style={{ display: 'flex', gap: 2, background: '#F1F5F9', borderRadius: 7, padding: 3, flexShrink: 0 }}>
-        {RANGES.map(r => (
-          <button key={r} onClick={() => onDateRange(r)} style={{
-            padding: '4px 10px', borderRadius: 5, border: 'none', cursor: 'pointer', fontSize: 12,
-            fontWeight: dateRange === r ? 600 : 400,
-            background: dateRange === r ? '#fff' : 'transparent',
-            color: dateRange === r ? '#0F172A' : '#64748B',
-            boxShadow: dateRange === r ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-            transition: 'all 0.15s', fontFamily: 'inherit',
-          }}>
-            {RANGE_LABELS[r]}
-          </button>
-        ))}
+      {/* All Time badge */}
+      <div style={{ background: '#F1F5F9', borderRadius: 7, padding: '4px 12px', flexShrink: 0 }}>
+        <span style={{ fontSize: 12, fontWeight: 600, color: '#0F172A' }}>All Time</span>
       </div>
 
       {/* Refresh — hidden on mobile (use pull-to-refresh instead) */}

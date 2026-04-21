@@ -19,7 +19,6 @@ export default function App() {
   const [collapsed, setCollapsed] = useState<boolean>(saved.collapsed || false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [aiOpen, setAiOpen] = useState(false)
-  const [dateRange, setDateRange] = useState<DateRange>('30d')
   const [refreshKey, setRefreshKey] = useState(0)
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function App() {
     setMobileOpen(false)
   }
 
-  const screenProps = { dateRange, refreshKey }
+  const screenProps = { dateRange: 'all' as const, refreshKey }
 
   const currentScreen = {
     overview:  <OverviewScreen {...screenProps} />,
@@ -63,8 +62,6 @@ export default function App() {
       <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <TopBar
           screen={screen}
-          dateRange={dateRange}
-          onDateRange={setDateRange}
           onAskAI={() => setAiOpen(o => !o)}
           onRefreshed={() => setRefreshKey(k => k + 1)}
           onMenuToggle={() => setMobileOpen(o => !o)}
