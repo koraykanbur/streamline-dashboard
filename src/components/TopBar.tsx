@@ -96,12 +96,12 @@ export default function TopBar({ screen, dateRange, onDateRange, onAskAI, onRefr
         ))}
       </div>
 
-      {/* Refresh — label hidden on mobile */}
+      {/* Refresh — hidden on mobile (use pull-to-refresh instead) */}
       <button
         onClick={handleRefresh}
+        className="hidden sm:flex items-center"
         style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          padding: '7px 11px', border: '1px solid #E2E8F0', borderRadius: 7,
+          gap: 6, padding: '7px 11px', border: '1px solid #E2E8F0', borderRadius: 7,
           background: '#fff', cursor: 'pointer', color: '#475569',
           fontSize: 13, fontWeight: 500, fontFamily: 'inherit', transition: 'all 0.15s', flexShrink: 0,
         }}
@@ -113,7 +113,7 @@ export default function TopBar({ screen, dateRange, onDateRange, onAskAI, onRefr
           style={{ transform: refreshing ? 'rotate(360deg)' : 'none', transition: refreshing ? 'transform 0.7s linear' : 'none' }}>
           <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
         </svg>
-        <span className="hidden sm:inline">Refresh Data</span>
+        Refresh Data
       </button>
 
       {/* Ask AI */}
