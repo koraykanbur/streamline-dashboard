@@ -69,7 +69,7 @@ export default function App() {
           onRefreshed={() => setRefreshKey(k => k + 1)}
           onMenuToggle={() => setMobileOpen(o => !o)}
         />
-        <main className="flex-1 overflow-y-auto relative" style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative" style={{ overscrollBehavior: 'contain none', WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' } as React.CSSProperties}>
           {currentScreen}
         </main>
       </div>
