@@ -55,9 +55,33 @@ export default function TopBar({ screen, dateRange, onDateRange, onAskAI, onRefr
         ☰
       </button>
 
-      <span style={{ fontWeight: 700, fontSize: 15, color: '#0F172A', whiteSpace: 'nowrap', flexShrink: 0 }}>
+      {/* Desktop: static title */}
+      <span className="hidden md:block" style={{ fontWeight: 700, fontSize: 15, color: '#0F172A', whiteSpace: 'nowrap', flexShrink: 0 }}>
         {SCREEN_LABELS[screen]}
       </span>
+
+      {/* Mobile: tappable title that refreshes */}
+      <button
+        onClick={handleRefresh}
+        disabled={refreshing}
+        className="flex md:hidden items-center gap-1.5"
+        style={{
+          border: 'none', background: 'transparent', cursor: refreshing ? 'default' : 'pointer',
+          padding: 0, fontFamily: 'inherit', flexShrink: 0,
+        }}
+      >
+        <span style={{ fontWeight: 700, fontSize: 15, color: refreshing ? '#94A3B8' : '#0F172A', whiteSpace: 'nowrap' }}>
+          {SCREEN_LABELS[screen]}
+        </span>
+        <svg
+          width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={refreshing ? '#94A3B8' : '#64748B'}
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ flexShrink: 0, animation: refreshing ? 'spin 0.7s linear infinite' : 'none' }}
+        >
+          <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+        </svg>
+      </button>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
 
       {/* Search — hidden on small mobile */}
       <div className="hidden sm:block" style={{ flex: 1, maxWidth: 280, position: 'relative' }}>
