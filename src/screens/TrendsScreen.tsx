@@ -83,14 +83,16 @@ export default function TrendsScreen({ dateRange, refreshKey }: { dateRange: Dat
   ]
 
   return (
-    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div className="p-4 md:p-6 flex flex-col gap-5">
       {/* Best period callout */}
       {bestWeek && (
-        <div style={{
-          background: 'linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%)',
-          borderRadius: 8, padding: '16px 24px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        }}>
+        <div
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+          style={{
+            background: 'linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%)',
+            borderRadius: 8, padding: '16px 24px',
+          }}
+        >
           <div>
             <div style={{ fontSize: 11, color: '#5EEAD4', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
               Best Performing Period

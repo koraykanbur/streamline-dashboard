@@ -14,27 +14,35 @@ interface Props {
   onNav: (s: Screen) => void
   collapsed: boolean
   onToggle: () => void
+  mobileOpen: boolean
+  onMobileClose: () => void
   bgColor?: string
 }
 
-export default function Sidebar({ active, onNav, collapsed, onToggle, bgColor = '#00264E' }: Props) {
+export default function Sidebar({ active, onNav, collapsed, onToggle, mobileOpen, onMobileClose, bgColor = '#00264E' }: Props) {
+  const drawerWidth = mobileOpen ? 220 : (collapsed ? 64 : 220)
+
   return (
-    <aside style={{
-      width: collapsed ? 64 : 220,
-      minWidth: collapsed ? 64 : 220,
-      background: bgColor,
-      display: 'flex',
-      flexDirection: 'column',
-      transition: 'width 0.22s ease, min-width 0.22s ease',
-      overflow: 'hidden',
-      zIndex: 10,
-      flexShrink: 0,
-    }}>
-      {/* Logo */}
+    <aside
+      className={[
+        'fixed inset-y-0 left-0 z-20 flex flex-col',
+        'md:static md:translate-x-0',
+        'transition-transform duration-[220ms] ease-in-out',
+        mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+      ].join(' ')}
+      style={{
+        width: drawerWidth,
+        minWidth: drawerWidth,
+        background: bgColor,
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}
+    >
+      {/* Logo row */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
-        padding: collapsed ? '20px 0' : '20px 20px',
-        justifyContent: collapsed ? 'center' : 'flex-start',
+        padding: collapsed && !mobileOpen ? '20px 0' : '20px 20px',
+        justifyContent: collapsed && !mobileOpen ? 'center' : 'flex-start',
         borderBottom: '1px solid rgba(255,255,255,0.07)', marginBottom: 8,
       }}>
         <div style={{
@@ -45,25 +53,41 @@ export default function Sidebar({ active, onNav, collapsed, onToggle, bgColor = 
             <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14l3.5 3.5L10 14" />
           </svg>
         </div>
-        {!collapsed && (
-          <span style={{ color: '#F8FAFC', fontWeight: 700, fontSize: 16, letterSpacing: '-0.3px', whiteSpace: 'nowrap' }}>
+        {(!collapsed || mobileOpen) && (
+          <span style={{ color: '#F8FAFC', fontWeight: 700, fontSize: 16, letterSpacing: '-0.3px', whiteSpace: 'nowrap', flex: 1 }}>
             Streamline
           </span>
         )}
+        {/* Close button — mobile only */}
+        <button
+          onClick={onMobileClose}
+          className="flex md:hidden items-center justify-center"
+          style={{
+            width: 28, height: 28, borderRadius: 6, border: 'none',
+            background: 'rgba(255,255,255,0.1)', color: 'rgba(148,163,184,0.9)',
+            cursor: 'pointer', flexShrink: 0,
+          }}
+          aria-label="Close menu"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
 
       {/* Nav */}
       <nav style={{ flex: 1, padding: '4px 10px', display: 'flex', flexDirection: 'column', gap: 2 }}>
         {NAV_ITEMS.map(item => {
           const isActive = active === item.id
+          const showLabel = !collapsed || mobileOpen
           return (
             <button
               key={item.id}
               onClick={() => onNav(item.id)}
               style={{
                 display: 'flex', alignItems: 'center',
-                gap: 10, padding: collapsed ? '9px 0' : '9px 12px',
-                justifyContent: collapsed ? 'center' : 'flex-start',
+                gap: 10, padding: showLabel ? '9px 12px' : '9px 0',
+                justifyContent: showLabel ? 'flex-start' : 'center',
                 borderRadius: 6, border: 'none', cursor: 'pointer',
                 background: isActive ? '#75AAE7' : 'transparent',
                 color: isActive ? '#ffffff' : 'rgba(148,163,184,0.9)',
@@ -71,26 +95,27 @@ export default function Sidebar({ active, onNav, collapsed, onToggle, bgColor = 
                 transition: 'background 0.15s, color 0.15s',
                 whiteSpace: 'nowrap', width: '100%', fontFamily: 'inherit',
               }}
-              title={collapsed ? item.label : undefined}
+              title={!showLabel ? item.label : undefined}
               onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(117,170,231,0.2)' }}
               onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent' }}
             >
               <span style={{ flexShrink: 0 }}>
                 <SvgIcon path={item.icon} size={16} stroke={isActive ? '#ffffff' : 'rgba(148,163,184,0.9)'} />
               </span>
-              {!collapsed && <span>{item.label}</span>}
+              {showLabel && <span>{item.label}</span>}
             </button>
           )
         })}
       </nav>
 
-      {/* Collapse toggle */}
+      {/* Collapse toggle — desktop only */}
       <button
         onClick={onToggle}
+        className="hidden md:flex items-center justify-center"
         style={{
           margin: '10px', padding: '9px', borderRadius: 6, border: 'none',
           background: 'rgba(255,255,255,0.05)', color: 'rgba(148,163,184,0.7)',
-          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer',
           transition: 'background 0.15s', fontFamily: 'inherit',
         }}
         title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}

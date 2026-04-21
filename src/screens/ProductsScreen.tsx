@@ -51,10 +51,10 @@ export default function ProductsScreen({ dateRange, refreshKey }: { dateRange: D
   }
 
   return (
-    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {/* Stat cards */}
+    <div className="p-4 md:p-6 flex flex-col gap-5">
+      {/* Stat cards — stack on mobile */}
       {topByRev && topByMargin && lowMargin && (
-        <div style={{ display: 'flex', gap: 14 }}>
+        <div className="flex flex-col sm:flex-row gap-[14px]">
           {[
             { label: 'Top by Revenue', name: topByRev.name, val: fmt$(topByRev.revenue), sub: `${topByRev.units} units sold`, color: '#0D9488', bg: '#F0FDFA', border: '#99F6E4' },
             { label: 'Top by Margin', name: topByMargin.name, val: topByMargin.avgMargin + '%', sub: 'avg margin', color: '#0D9488', bg: '#F0FDFA', border: '#99F6E4' },
@@ -70,8 +70,8 @@ export default function ProductsScreen({ dateRange, refreshKey }: { dateRange: D
         </div>
       )}
 
-      {/* Charts */}
-      <div style={{ display: 'flex', gap: 16 }}>
+      {/* Charts — stack on mobile, side by side on desktop */}
+      <div className="flex flex-col md:flex-row gap-4">
         <Card style={{ flex: 2 }}>
           <CardHeader title="Revenue by Product" />
           <div style={{ padding: '16px 20px 20px' }}>
@@ -92,6 +92,7 @@ export default function ProductsScreen({ dateRange, refreshKey }: { dateRange: D
       {/* Table */}
       <Card style={{ overflow: 'hidden' }}>
         <CardHeader title="Product Performance" />
+        <div className="overflow-x-auto">
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr>
@@ -134,6 +135,7 @@ export default function ProductsScreen({ dateRange, refreshKey }: { dateRange: D
             ))}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   )

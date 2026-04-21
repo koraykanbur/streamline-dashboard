@@ -138,7 +138,7 @@ export default function OrdersScreen({ dateRange, refreshKey }: { dateRange: Dat
   const sortableCols: Record<string, string> = { 'Date': 'date', 'Revenue': 'revenue', 'Profit': 'profit', 'Margin %': 'margin' }
 
   return (
-    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="p-4 md:p-6 flex flex-col gap-4">
       {missingColumns.length > 0 && <MissingDataBanner columns={missingColumns} />}
 
       {/* Filter bar */}

@@ -121,19 +121,19 @@ export default function OverviewScreen({ dateRange, refreshKey }: { dateRange: D
   }
 
   return (
-    <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div className="p-4 md:p-6 flex flex-col gap-5">
       {summary?.missingColumns?.length ? <MissingDataBanner columns={summary.missingColumns} /> : null}
 
-      {/* KPI Row */}
-      <div style={{ display: 'flex', gap: 16 }}>
+      {/* KPI Row — 2 cols on mobile, 4 on desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KpiCard label="Total Revenue" value={summary?.totalRevenue ?? 0} prefix="$" delta={summary?.revDelta} icon="revenue" iconBg="#3B82F6" />
         <KpiCard label="Total Profit" value={summary?.totalProfit ?? 0} prefix="$" delta={summary?.profitDelta} icon="profit" iconBg="#10B981" />
         <KpiCard label="Profit Margin" value={summary?.avgMargin ?? 0} suffix="%" delta={summary?.marginDelta} icon="margin" iconBg="#F59E0B" />
         <KpiCard label="Total Orders" value={summary?.orderCount ?? 0} delta={summary?.ordersDelta} icon="orders" iconBg="#8B5CF6" prefix="" suffix="" />
       </div>
 
-      {/* Charts Row */}
-      <div style={{ display: 'flex', gap: 16 }}>
+      {/* Charts Row — stack on mobile */}
+      <div className="flex flex-col md:flex-row gap-4">
         {/* Revenue Trend */}
         <Card style={{ flex: 3 }}>
           <div style={{ padding: '18px 20px 4px' }}>
@@ -198,6 +198,7 @@ export default function OverviewScreen({ dateRange, refreshKey }: { dateRange: D
           <span style={{ fontWeight: 700, fontSize: 15, color: '#0F172A' }}>Recent Orders</span>
           <span style={{ fontSize: 13, color: '#3B82F6', fontWeight: 600, cursor: 'pointer' }}>View All →</span>
         </div>
+        <div className="overflow-x-auto">
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13.5 }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #F1F5F9' }}>
@@ -229,6 +230,7 @@ export default function OverviewScreen({ dateRange, refreshKey }: { dateRange: D
             ))}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   )

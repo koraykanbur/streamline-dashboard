@@ -17,6 +17,7 @@ export default function App() {
   const saved = loadState()
   const [screen, setScreen] = useState<Screen>(saved.screen || 'overview')
   const [collapsed, setCollapsed] = useState<boolean>(saved.collapsed || false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [aiOpen, setAiOpen] = useState(false)
   const [dateRange, setDateRange] = useState<DateRange>('30d')
   const [refreshKey, setRefreshKey] = useState(0)
@@ -24,6 +25,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('streamline-state', JSON.stringify({ screen, collapsed }))
   }, [screen, collapsed])
+
+  const handleNav = (s: Screen) => {
+    setScreen(s)
+    setMobileOpen(false)
+  }
 
   const screenProps = { dateRange, refreshKey }
 
@@ -36,23 +42,34 @@ export default function App() {
   }[screen]
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#F8FAFC' }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: '#F8FAFC' }}>
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-10 bg-black/50 md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       <Sidebar
         active={screen}
-        onNav={setScreen}
+        onNav={handleNav}
         collapsed={collapsed}
         onToggle={() => setCollapsed(c => !c)}
+        mobileOpen={mobileOpen}
+        onMobileClose={() => setMobileOpen(false)}
       />
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+      <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <TopBar
           screen={screen}
           dateRange={dateRange}
           onDateRange={setDateRange}
           onAskAI={() => setAiOpen(o => !o)}
           onRefreshed={() => setRefreshKey(k => k + 1)}
+          onMenuToggle={() => setMobileOpen(o => !o)}
         />
-        <main style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+        <main className="flex-1 overflow-y-auto relative">
           {currentScreen}
         </main>
       </div>
